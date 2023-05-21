@@ -4,7 +4,8 @@ dotenv.config();
 import './src/database';
 
 import express from 'express';
-import homeHoutes from './src/routes/homeRoutes';
+import homeRoutes from './src/routes/homeRoutes';
+import userRoutes from './src/routes/userRoutes';
 
 class App {
   constructor() {
@@ -19,7 +20,8 @@ class App {
   }
 
   routes() {
-    this.app.use('/', homeHoutes);
+    this.app.use('/', homeRoutes);
+    this.app.use('/users/', userRoutes);
   }
 }
 
