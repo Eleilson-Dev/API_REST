@@ -11,7 +11,7 @@ class HomeController {
       altura: 1.67,
     });
 
-    res.json(novoAluno);
+    return res.json(novoAluno);
   }
 }
 
