@@ -55,7 +55,6 @@ class UserController {
       const user = await User.findByPk(req.userId);
 
       if (!user) {
-        console.log('ID DO USUARIO', req.userId);
         return res.status(400).json({
           errors: ['usuário não existe'],
         });
