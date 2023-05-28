@@ -1,5 +1,5 @@
-import User from '../models/User';
 import Jwt from 'jsonwebtoken';
+import User from '../models/User';
 
 class TokenController {
   async store(req, res) {
@@ -7,11 +7,11 @@ class TokenController {
 
     if (!email || !password) {
       return res.status(401).json({
-        errors: ['Credenciais Invalidas'],
+        errors: ['Credenciais invalidas'],
       });
     }
 
-    const user = await User.findOne({ where: { email } });
+    const user = await User.findOne({ where: { email: email } });
 
     if (!user) {
       return res.status(401).json({
@@ -21,16 +21,20 @@ class TokenController {
 
     if (!(await user.passwordIsValid(password))) {
       return res.status(401).json({
-        errors: ['Senha Invalida'],
+        errors: ['Senha invalida'],
       });
     }
 
     const { id } = user;
+
     const token = Jwt.sign({ id, email }, process.env.TOKEN_SECRET, {
       expiresIn: process.env.TOKEN_EXPIRATION,
     });
 
-    return res.json({ token });
+    return res.json({
+      token,
+      user: { nome: user.nome, id, email },
+    });
   }
 }
 

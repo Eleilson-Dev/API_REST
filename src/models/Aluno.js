@@ -1,4 +1,4 @@
-import Sequelize, { Model } from 'sequelize';
+import { Sequelize, Model } from 'sequelize';
 
 export default class Aluno extends Model {
   static init(sequelize) {
@@ -27,6 +27,9 @@ export default class Aluno extends Model {
         email: {
           type: Sequelize.STRING,
           defaultValue: '',
+          unique: {
+            msg: 'E-mail já existe',
+          },
           validate: {
             isEmail: {
               msg: 'E-mail invalido',
@@ -38,7 +41,7 @@ export default class Aluno extends Model {
           defaultValue: '',
           validate: {
             isInt: {
-              msg: 'Idade precisa ser um número intero',
+              msg: 'Idade precisa ser um número inteiro',
             },
           },
         },
@@ -47,7 +50,7 @@ export default class Aluno extends Model {
           defaultValue: '',
           validate: {
             isFloat: {
-              msg: 'Peso precisa ser um número intero ou de ponto flutuante',
+              msg: 'Peso precisa ser um numero interio ou de ponto flutuante',
             },
           },
         },
@@ -56,15 +59,17 @@ export default class Aluno extends Model {
           defaultValue: '',
           validate: {
             isFloat: {
-              msg: 'Altura precisa ser um número intero ou de ponto flutuante',
+              msg: 'Altura precisa ser um numero interio ou de ponto flutuante',
             },
           },
         },
       },
-      {
-        sequelize,
-      },
+      { sequelize },
     );
     return this;
+  }
+
+  static associate(models) {
+    this.hasMany(models.Foto, { foreignKey: 'aluno_id' });
   }
 }

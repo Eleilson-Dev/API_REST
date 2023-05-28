@@ -16,21 +16,25 @@ export default async (req, res, next) => {
     const dados = Jwt.verify(token, process.env.TOKEN_SECRET);
     const { id, email } = dados;
 
-    const user = await User.findOne({ where: { id, email } });
+    const user = await User.findOne({
+      where: {
+        id,
+        email,
+      },
+    });
 
     if (!user) {
       return res.status(401).json({
-        errors: ['Usuário invalido'],
+        errors: ['Usuario invalido'],
       });
     }
 
     req.userId = id;
     req.userEmail = email;
-
-    next();
-  } catch (err) {
+    return next();
+  } catch (e) {
     return res.status(401).json({
-      errors: ['Token expirado ou invalido'],
+      errors: ['Token Expirado ou invalido'],
     });
   }
 };

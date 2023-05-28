@@ -1,11 +1,12 @@
 import { Router } from 'express';
-const router = new Router();
-
 import UserController from '../controllers/UserController';
 import loginRequired from '../middlewares/loginRequired';
 
-router.get('/', loginRequired, UserController.index);
-router.get('/:id', UserController.show);
+const router = new Router();
+
+// Não deveria existir
+router.get('/', UserController.index); // Lista usuarios
+router.get('/:id', loginRequired, UserController.show); // Lista usuario
 
 router.post('/', UserController.store);
 router.put('/', loginRequired, UserController.update);
