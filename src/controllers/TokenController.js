@@ -11,7 +11,7 @@ class TokenController {
       });
     }
 
-    const user = await User.findOne({ where: { email: email } });
+    const user = await User.findOne({ where: { email } });
 
     if (!user) {
       return res.status(401).json({
@@ -33,7 +33,6 @@ class TokenController {
 
     return res.json({
       token,
-      user: { nome: user.nome, id, email },
     });
   }
 }

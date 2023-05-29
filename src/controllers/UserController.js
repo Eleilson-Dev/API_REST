@@ -3,14 +3,21 @@ import User from '../models/User';
 class UserController {
   async store(req, res) {
     try {
+      const { email } = req.body;
+      const userExists = await User.findOne({ where: { email } });
+
+      if (userExists) {
+        return res.status(400).json({
+          errors: ['Usuário já existe'],
+        });
+      }
+
       const novoUser = await User.create(req.body);
-
-      const { id, nome, email } = novoUser;
-
-      return res.json({ id, nome, email });
-    } catch (e) {
+      const { id, nome, created_at, updated_at } = novoUser;
+      return res.json({ id, nome, email, created_at, updated_at });
+    } catch (err) {
       return res.status(400).json({
-        errors: e.errors.map((err) => {
+        errors: err.errors.map((err) => {
           return err.message;
         }),
       });

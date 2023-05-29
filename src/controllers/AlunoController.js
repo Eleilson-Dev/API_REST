@@ -27,6 +27,15 @@ class AlunoController {
 
   async store(req, res) {
     try {
+      const { email } = req.body;
+      const alunoExists = await Aluno.findOne({ where: { email } });
+
+      if (alunoExists) {
+        return res.status(400).json({
+          errors: ['Aluno já existe'],
+        });
+      }
+
       const aluno = await Aluno.create(req.body);
 
       res.json(aluno);
